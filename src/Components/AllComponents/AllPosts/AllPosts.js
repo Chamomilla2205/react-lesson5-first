@@ -10,9 +10,11 @@ class AllPosts extends Component {
 
     state = {posts:[]}
 
-    async componentDidMount() {
-        let posts = await this.servicesOfPosts.getAllPosts()
-        this.setState({posts})
+    componentDidMount() {
+        this.servicesOfPosts
+            .getAllPosts()
+            .then(posts=>this.setState({posts}))
+        // this.setState({posts})
     }
 
     render() {
@@ -24,12 +26,11 @@ class AllPosts extends Component {
                     posts.map(value => <Post item = {value} key = {value.id}/>)
                 }
                 <hr/>
-                <Switch>
-                    <Route path={url + `/:id`} render={(props) => {
-                        let {match:{params:{id}}} = props
+
+                    <Route path={url + `/:id`} render={({match:{params:{id}}}) => {
                         return <FullPost id={id} key = {id}/>
                     }}/>
-                </Switch>
+
                 <hr/>
             </div>
         );
